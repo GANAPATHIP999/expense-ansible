@@ -3,6 +3,11 @@
   become: yes
   vars:
     login_host: db.aws-9s.shop
+  vars_prompt:
+  - name: mysql root_password
+    prompt: please enter MySQL root password 
+    private: no 
+    
   tasks: 
   - name: Install MySQL Server
     ansible.builtin.dnf:
@@ -20,12 +25,12 @@
       - PyMySQL
       - cryptography
       executable: pip3.9 #pip3.11 if python version is using 3.11
-      
+
 # check password is setup or not 
   - name: check DB connection
     community.mysql.mysql_info:
       login_user: root
-      login_password: ExpenseApp@1
+      login_password: "{{ mysql root_password }}"
       login_host: "{{ login_host }}"
       filter: version
     ignore_errors: yes 
@@ -35,3 +40,8 @@
   - name: print output
     ansible.builtin.debug:
       msg: "Output: {{ mysql_connection_output }} "
+
+
+  - name: setup root password
+    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ mysql root_password }}"
+    when: mysql_connection_output.failed is True
