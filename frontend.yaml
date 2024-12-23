@@ -13,7 +13,4 @@
       state: started
       enabled: yes
 
-  - name: delete daefault website
-    ansible.builtin.file:
-      path: /usr/share/nginx/html/*
-      state: absent
+  

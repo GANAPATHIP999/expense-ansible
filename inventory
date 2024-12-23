@@ -4,5 +4,5 @@ db.aws-9s.shop
 [backend]
 backend.aws-9s.shop
 
-[fronetend]
+[frontend]
 aws-9s.shop
